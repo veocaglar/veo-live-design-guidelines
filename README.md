@@ -21,8 +21,8 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 ### Fonts
 
 - **Protokoll** — default font for everything readable: body, labels, titles, buttons, navigation, dialogs.
-- **OldSchool Grotesk Compressed Bold** — brand font. Use only for "oomph" moments: club names, scores, metrics/values, hero titles.
-  - **DO NOT** use OldSchool for prose, body copy, descriptions, or anything meant to be read at length.
+- **Oldschool Grotesk Compressed Bold** — brand font. Use only for "oomph" moments: club names, scores, metrics/values, hero titles.
+  - **DO NOT** use Oldschool for prose, body copy, descriptions, or anything meant to be read at length.
 - Native components that don't allow font override (iOS context menus, share sheet, etc.) — accept the system font, don't fight the platform.
 
 ### Shared rules
@@ -47,7 +47,7 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 - Use **Material 3 type scale**: `MaterialTheme.typography.*`. Protokoll is bound to all 15 M3 roles via `Typography().withFont(Protokoll)`.
 - **Bold is not an Android convention.** Differentiate hierarchy with size and M3 role (`titleLarge` vs `titleSmall`), not added weight. M3 default weights are intentional — let them carry.
-- Brand variants for OldSchool Grotesk Compressed Bold (with line-height trim for the font's bottom-heavy metrics):
+- Brand variants for Oldschool Grotesk Compressed Bold (with line-height trim for the font's bottom-heavy metrics):
   - `titleLargeBrand` — 22sp
   - `headlineSmallBrand` — 24sp
   - `headlineLargeBrand` — 32sp
