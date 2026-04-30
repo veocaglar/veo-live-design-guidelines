@@ -1,8 +1,8 @@
 # Veo Live Design Guidelines
 
-Context for Claude assistants working on Veo Live (iOS or Android). Paste, reference, or include in `CLAUDE.md`.
+Design conventions for Veo Live across iOS and Android.
 
-This describes the **target state**. Migrations in progress are listed for situational awareness, not as work to do unless asked.
+Describes the **target state**. Migrations in progress are listed for situational awareness, not as work to do unless asked.
 
 ---
 
