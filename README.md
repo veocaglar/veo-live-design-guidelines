@@ -27,8 +27,9 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 ### Shared rules
 
-- Pick **one** type style per text element. It carries size, weight, line height, and letter spacing together.
-- **DO NOT** layer inline `fontSize` / `fontWeight` / `letterSpacing` / `lineHeight` on top of a typography style. Treat as a smell. Fix the style or extend the scale.
+- Pick **one** type style per text element. It carries size, line height, and letter spacing together.
+- **DO NOT** layer inline `fontSize` / `letterSpacing` / `lineHeight` on top of a typography style. Treat as a smell. Fix the style or extend the scale.
+- **Weight is platform-specific** — see iOS and Android rules below.
 - **Rarely add new styles.** Use the existing scale. Only extend when it genuinely can't express the need.
 - **Color is the exception** — setting color inline is fine (`.foregroundStyle(...)`, `color = OnSurfaceSecondary`). Color is separate from the type scale.
 - During Figma audits: pick the matching scale style. If the source has inline overrides, flag as a coverage gap and open a follow-up — do not reproduce overrides in Figma.
@@ -37,7 +38,8 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 - Use **`VeoDesignSystem`** package. API: **`VeoFont.*`**.
 - Naming follows Apple's typography scale: `headline`, `subheadline`, `body`, `callout`, `footnote`, `caption`, etc.
-- Protokoll ships **Regular / Medium / Bold only** — no SemiBold. Use `.weight(.bold)` if you'd otherwise reach for SemiBold.
+- Protokoll ships **Regular / Medium / Bold only** — no SemiBold.
+- **Weight inline is OK** when the style+weight combo is the intent (e.g. `.font(VeoFont.headline).fontWeight(.bold)`). This is idiomatic SwiftUI and avoids inventing a new scale entry per weight pairing. Don't reach for it just to make something "bolder-looking" if a heavier style fits — pick the heavier style first.
 - All `VeoFont.*` styles use `relativeTo:` and support **Dynamic Type** including AX1–AX5.
 - For UIKit consumers, use `UIFont+VeoFont.swift` in `apps/veolive/LocalDependencies/Sources/UIComponents/Extensions/`. It wraps `UIFontMetrics(forTextStyle:)`.
 
@@ -45,6 +47,7 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 - Use **Material 3 type scale**: `MaterialTheme.typography.*`. Protokoll is bound to all 15 M3 roles via `Typography().withFont(Protokoll)`.
 - **Bold is not an Android convention.** Differentiate hierarchy with size and M3 role (`titleLarge` vs `titleSmall`), not added weight. Let M3 default weights carry.
+- **DO NOT** override `fontWeight` inline. If a heavier emphasis is needed, use a different M3 role or a brand variant.
 - Brand variants for Oldschool Grotesk Compressed Bold (with line-height trim for the font's bottom-heavy metrics):
   - `titleLargeBrand` — 22sp
   - `headlineSmallBrand` — 24sp
