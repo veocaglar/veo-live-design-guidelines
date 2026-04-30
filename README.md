@@ -16,23 +16,39 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 ## Typography
 
+### Fonts
+
+- **Protokoll** is the default font for everything readable: body, labels, titles, buttons, navigation, dialogs.
+- **OldSchool Grotesk Compressed Bold** is the brand font, used sparingly for "oomph" moments — club names, scores, key metrics/values, hero titles. **Never** for prose, body copy, or anything meant to be read at length.
+- Inter is deprecated and being removed from both platforms.
+- When a native component doesn't allow font override (e.g. iOS context menus, system share sheet), the system font is fine — don't fight the platform. Apply Protokoll wherever you reasonably can.
+
+### Shared rules
+
+- **Pick one style end-to-end.** A text element gets one type style and that style carries size, weight, line height, and letter spacing. Layering inline `fontSize` / `fontWeight` / `letterSpacing` / `lineHeight` on top of a style is a smell — fix the style or extend the scale.
+- **Rarely create new styles.** Use the existing scale. Only add a token when a real need can't be expressed within it.
+- **Color is the exception** — setting color inline (`.foregroundStyle(...)`, `color = OnSurfaceSecondary`) is fine. Color is a separate concern from the type scale.
+- During Figma audits: pick the matching scale style; if the source has inline overrides, flag as a coverage gap and open a follow-up rather than reproducing the override in Figma.
+
 ### iOS
 
-- **Migrate off Inter → Protokoll + OldSchoolGrotesk** (the Veo design system package).
-- The `Font.bodyCustom` / `Font.*Custom` family in `LocalDependencies/Sources/UIComponents/Extensions/Fonts.swift` calls Inter and is the migration target.
-- Prefer system fonts (SF Pro) where reasonable for a more iOS-native feel — free Dynamic Type and accessibility scaling.
-- No inline `fontSize` / `fontWeight` / `letterSpacing` overrides. Pick one `Font` style; if the scale doesn't cover a need, extend the scale.
+- Use **`VeoDesignSystem`** (`VeoFont.*`) — the canonical Veo design system package, shared with VeoGo and the Veo-Foundation Figma library. Naming follows Apple's typography scale (`headline`, `subheadline`, `body`, `callout`, `footnote`, `caption`, etc.).
+- Protokoll ships **Regular / Medium / Bold** — there is no SemiBold. If migrating SemiBold call sites, apply `.weight(.bold)` at the call site.
+- All `VeoFont.*` styles use `relativeTo:` so they support **Dynamic Type** (including Larger Accessibility Sizes AX1–AX5) automatically.
+- For UIKit consumers, use `UIFont+VeoFont.swift` in `apps/veolive/LocalDependencies/Sources/UIComponents/Extensions/`. It wraps `UIFontMetrics(forTextStyle:)` for Dynamic Type. Currently used by `HomeViewController` nav bar and `ChromecastManager` (`GCKUIStyle`).
+- Migration tracked in **VP-1737** (iOS PR [#859](https://github.com/recoord/veo-mobile-ios/pull/859)) — completes the rollout started in PR #396.
 
 ### Android
 
-- Use `MaterialTheme.typography.*` (M3) end-to-end.
-- Brand variants exist for cases the M3 scale doesn't cover: `titleLargeBrand`, `headlineSmallBrand`, `headlineLargeBrand` (added in VP-1738).
-- Avoid layering inline `fontSize`, `fontWeight`, `letterSpacing`, `lineHeight` next to a `style = MaterialTheme.typography.*` — that fragments the type scale and hides bugs (e.g. the latent FontFamily bug fixed in VP-1738 where subtitles silently rendered Bold).
-- Color is a separate concern and is fine to set inline (`color = OnSurfaceSecondary`).
-
-### Both
-
-- During Figma audits: pick the matching M3 / iOS scale style; if the source has inline overrides, flag as a coverage gap and open a follow-up — don't reproduce the override in Figma.
+- Use **Material 3 type scale** — `MaterialTheme.typography.*` end-to-end. Protokoll is bound to all 15 M3 roles via `Typography().withFont(Protokoll)`.
+- **Bold is not an Android convention.** Differentiate hierarchy with size and M3 role (e.g. `titleLarge` vs `titleSmall`), not by adding weight. M3's default weights are intentional — let them carry.
+- **Brand variants** for hero/oomph text (OldSchool Grotesk Compressed Bold, with line-height trim for the font's bottom-heavy metrics):
+  - `titleLargeBrand` — 22sp
+  - `headlineSmallBrand` — 24sp
+  - `headlineLargeBrand` — 32sp
+- Use these for club names, scoreboards, big numerics, hero empty states. Never for body or running text.
+- Functional inline overrides are OK in narrow cases: runtime-sized text (e.g. ClubLogo), debug-only tiny text, emoji sizing. Anything else should resolve to a typography role.
+- Migration tracked in **VP-1738** (Android PR [#247](https://github.com/recoord/veo-mobile-android/pull/247)) — replaces `PaceFonts`, the bespoke `Typography` object, and removes 42 inline overrides.
 
 ---
 
@@ -76,6 +92,7 @@ Initial questions to resolve:
 
 ## Open Questions
 
-- Should we treat system fonts (SF Pro / Roboto) as the default and keep Protokoll for headlines/brand moments only? Or full migration to Protokoll for body too?
-- Icon weight on Android — currently rounded, but is there a stroke weight standard for non-Material custom icons (sport illustrations)?
+- Apply Protokoll to native UIKit chrome via `UIAppearance` proxy (nav bar titles, tab bar items) — out of scope for VP-1737, worth a follow-up?
+- AX5 layout audit on iOS — Dynamic Type now works end-to-end, but do any cells truncate at the largest sizes?
+- Icon weight on Android — rounded is the default, but is there a stroke weight standard for non-Material custom icons (sport illustrations)?
 - Spacing & corner radius tokens — separate doc, or fold into this one?
