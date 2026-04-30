@@ -20,7 +20,6 @@ Brand assets stay custom: LIVE logo, Veo Crest, splash, empty-state illustration
 
 - **Protokoll** is the default font for everything readable: body, labels, titles, buttons, navigation, dialogs.
 - **OldSchool Grotesk Compressed Bold** is the brand font, used sparingly for "oomph" moments — club names, scores, key metrics/values, hero titles. **Never** for prose, body copy, or anything meant to be read at length.
-- Inter is deprecated and being removed from both platforms.
 - When a native component doesn't allow font override (e.g. iOS context menus, system share sheet), the system font is fine — don't fight the platform. Apply Protokoll wherever you reasonably can.
 
 ### Shared rules
